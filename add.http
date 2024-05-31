@@ -1,0 +1,22 @@
+### get index page
+GET http://127.0.0.1:7000
+
+
+### add group = foo, name = bar, created = 2024-01-01 12:34:56
+GET http://127.0.0.1:7000/api/v1/log?group=Zm9v&name=YmFy&created=2024-01-01%2012:34:56
+x-api-key: 12345
+
+
+### add group = foo, name = bar, created = null => now
+GET http://127.0.0.1:7000/api/v1/log?group=Zm9v&name=YmFy
+x-api-key: 12345
+
+
+### add group = my_target_group_1, name = 17.1.2-rc0, created = null => now
+GET http://127.0.0.1:7000/api/v1/log?group=bXlfdGFyZ2V0X2dyb3VwXzE=&name=MTcuMS4yLXJjMA==
+x-api-key: 12345
+
+### add group = my_target_group_1, name = 17.1.2-rc1, created = null => now
+GET http://127.0.0.1:7000/api/v1/log?group=bXlfdGFyZ2V0X2dyb3VwXzE=&name=MTcuMS4yLXJjMQ==
+x-api-key: 12345
+
