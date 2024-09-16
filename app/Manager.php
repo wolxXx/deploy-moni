@@ -47,10 +47,11 @@ class Manager
 
         $app->get('/', function (\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($pdo) {
             $groups     = [];
-            $groupNames = $pdo->query('select distinct group_name from deployments order by group_name ASC')->fetchAll();
+//            $groupNames = $pdo->query('select group_name from deployments x group by group_name order by max(x.created_at) DESC')->fetchAll();
+            $groupNames = $pdo->query('select group_name from deployments x group by group_name order by group_name asc')->fetchAll();
             foreach ($groupNames as $groupName) {
                 $groups[$groupName['group_name']] = [];
-                $data                             = $pdo->query('select * from deployments where group_name = "' . $groupName['group_name'] . '" order by created_at DESC limit 3')->fetchAll();
+                $data                             = $pdo->query('select * from deployments where group_name = "' . $groupName['group_name'] . '" order by created_at DESC, id desc limit 2')->fetchAll();
                 foreach ($data as $deployment) {
                     $groups[$groupName['group_name']][] = [
                         'id'         => $deployment['id'],
@@ -62,45 +63,57 @@ class Manager
             $random = \rand(0, \PHP_INT_MAX);
             $html   = <<<HTML
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
+    <meta name="google" content="notranslate">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="/styles.css?t={$random}" media="screen" rel="stylesheet" type="text/css"/>    
     <title>Deployment Monitor</title>
+    <script>
+        window.setTimeout(function() {
+            location.reload();          
+        }, 10000);    
+    </script>
 </head>
 <body>
 <div id="container">
-<h1>Deployment Monitor</h1>
-<table>
-<thead>
-    <tr>
-        <th>Group</th>
-        <th colspan="2">Deployments</th>
-    </tr>
-</thead>
-<tbody>
+<!--<h1>Deployment Monitor</h1>-->
+<!--<table>-->
+<!--<thead>-->
+<!--    <tr>-->
+<!--        <th>Group</th>-->
+<!--        <th colspan="2">Deployments</th>-->
+<!--    </tr>-->
+<!--</thead>-->
+<div style="font-size: 1rem; display: flex; flex-wrap: wrap; width: 100%; gap: 0px; justify-content: center; overflow: hidden;">
 
 HTML;
             foreach ($groups as $groupName => $data) {
                 $html .= <<<HTML
-<tr>
-<td>{$groupName}</td>
-<td>
+<div style="display: flex; flex-direction: column; width: 15%; border: 1px solid white; padding: 5px; word-wrap: anywhere;">
+<div style="text-align: center; font-weight: bold; font-size: 1.2em; padding-bottom: 5px;">{$groupName}</div>
+<div>
 
 HTML;
-                foreach ($data as $deployment) {
-                    $html .= $deployment['created_at'] . ': ' . $deployment['name'] . '<br>';
+                $formatter = \IntlDateFormatter::create('de_DE', \IntlDateFormatter::RELATIVE_MEDIUM, \IntlDateFormatter::SHORT);
+                foreach ($data as $idx => $deployment) {
+                    $borderStyle = '';
+                    if ($idx !== count($data) - 1) {
+                        $borderStyle = ' style="border-bottom: 1px solid #e0e0e0"';
+                    }
+                    $html .=  '<div' . $borderStyle . '>' . $formatter->format(new \DateTime($deployment['created_at'])) . ': ' . $deployment['name'] . '</div>';
                 }
                 $html .= <<<HTML
 
-</td>
-</tr>
+</div>
+</div>
 
 HTML;
             }
             $html .= <<<HTML
 
-</tbody>
-</table>
+</div>
+<!--</table>-->
 </div>
 </body>
 </html>

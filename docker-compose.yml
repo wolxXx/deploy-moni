@@ -18,7 +18,7 @@ services:
     networks:
       - backend
     ports:
-      - 7001:3306
+      - 127.0.0.1:7001:3306
     volumes:
       - db_data:/var/lib/mysql
     environment:
