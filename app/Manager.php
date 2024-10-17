@@ -70,9 +70,14 @@ class Manager
     <link href="/styles.css?t={$random}" media="screen" rel="stylesheet" type="text/css"/>    
     <title>Deployment Monitor</title>
     <script>
+        window.setInterval(function () {
+            const event = new Date();
+            console.log(event.toLocaleTimeString('de-DE'));
+            document.getElementById('clock').innerHTML = event.toLocaleDateString('de-DE') + ' '+  event.toLocaleTimeString('de-DE');            
+        }, 150);
         window.setTimeout(function() {
             location.reload();          
-        }, 10000);    
+        }, 20000);    
     </script>
 </head>
 <body>
@@ -85,23 +90,30 @@ class Manager
 <!--        <th colspan="2">Deployments</th>-->
 <!--    </tr>-->
 <!--</thead>-->
-<div style="font-size: 1rem; display: flex; flex-wrap: wrap; width: 100%; gap: 0px; justify-content: center; overflow: hidden;">
+<div style="font-size: 1rem; display: flex; flex-wrap: wrap; width: 100%; gap: 5px; justify-content: left; overflow: hidden;">
 
 HTML;
             foreach ($groups as $groupName => $data) {
                 $html .= <<<HTML
-<div style="display: flex; flex-direction: column; width: 15%; border: 1px solid white; padding: 5px; word-wrap: anywhere;">
-<div style="text-align: center; font-weight: bold; font-size: 1.2em; padding-bottom: 5px;">{$groupName}</div>
+<div style="display: flex; flex-direction: column; width: 15%; border: 1px solid white; padding: 0.2%; word-wrap: anywhere;">
+<div style="text-align: left; font-weight: bold; font-size: 1.3em; padding-bottom: 2px;">{$groupName}</div>
 <div>
 
 HTML;
                 $formatter = \IntlDateFormatter::create('de_DE', \IntlDateFormatter::RELATIVE_MEDIUM, \IntlDateFormatter::SHORT);
                 foreach ($data as $idx => $deployment) {
-                    $borderStyle = '';
+                    $style = ' style="';
                     if ($idx !== count($data) - 1) {
-                        $borderStyle = ' style="border-bottom: 1px solid #e0e0e0"';
+                        $style .= ' border-bottom: 1px solid #cccccc60;';
                     }
-                    $html .=  '<div' . $borderStyle . '>' . $formatter->format(new \DateTime($deployment['created_at'])) . ': ' . $deployment['name'] . '</div>';
+                    if (0 === $idx) {
+                        $style .= ' font-size: 1.1em; font-weight: bold; color: #fff;';
+                    }
+                    if (0 !== $idx) {
+                        $style .= ' color: #ccc;';
+                    }
+                    $style .= ' word-wrap: anywhere;"';
+                    $html .=  '<div' . $style . '><span style="color: #ccc; font-size: 0.79em; margin-right: 5px; display: inline-block;">' . $formatter->format(new \DateTime($deployment['created_at'])) . '</span> ' . $deployment['name'] . '</div>';
                 }
                 $html .= <<<HTML
 
@@ -110,6 +122,7 @@ HTML;
 
 HTML;
             }
+            $html .= '<span id="clock" style="position: fixed; bottom: 0; right: 0; background: #222; padding-left: 10px; padding-top: 10px; border-top: solid 1px #666; border-left: solid 1px #666; border-radius: 4px 0px 0px 0px;"></span>';
             $html .= <<<HTML
 
 </div>
