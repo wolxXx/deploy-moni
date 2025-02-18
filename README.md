@@ -17,7 +17,7 @@ track deployment via get-query to /api/v1/log
 with get parameters:  
  - group -> base64 encoded
  - name -> base64 encoded
- - date -> formatted 2024-01-01%2012:34:56 or null, wich means now
+ - date -> formatted 2024-01-01%2012:34:56 or null, which means now
 with header:
 - x-api-key: 12345 -> defined in deployment_key table, checked with validity
 
