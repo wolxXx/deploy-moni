@@ -192,7 +192,7 @@ HTML;
             ];
 
             $success = $prepared->execute($params);
-            if(false === $success) {
+            if (false === $success) {
                 throw new \PDOException("query failed", 500);
             }
 

@@ -30,9 +30,10 @@
     "ext-mysqli": "*",
     "ext-pdo": "*",
     "ext-simplexml": "*",
-    "monolog/monolog": "@stable",
-    "slim/slim": "@stable",
-    "slim/psr7": "@stable",
-    "slim/http": "@stable"
+    "monolog/monolog": "*",
+    "slim/http": "*",
+    "slim/php-view": "*",
+    "slim/psr7": "*",
+    "slim/slim": "*"
   }
 }

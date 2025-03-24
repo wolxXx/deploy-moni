@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   web:
-    build: ./
+    image: wolxxxy/php84:latest
     restart: always
     environment:
       - TZ=Europe/Berlin
