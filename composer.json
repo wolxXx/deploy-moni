@@ -23,14 +23,17 @@
     }
   },
   "require": {
-    "php": "~8.4",
+    "php": "8.4.*",
     "ext-curl": "*",
     "ext-intl": "*",
     "ext-json": "*",
     "ext-mysqli": "*",
     "ext-pdo": "*",
     "ext-simplexml": "*",
+    "laminas/laminas-json": "*",
     "monolog/monolog": "*",
+    "rector/rector": "*",
+    "savinmikhail/add_named_arguments_rector": "*",
     "slim/http": "*",
     "slim/php-view": "*",
     "slim/psr7": "*",

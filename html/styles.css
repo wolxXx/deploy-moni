@@ -5,10 +5,19 @@ body, html {
     padding: 0;
 }
 
+::backdrop {
+    background-image: linear-gradient(
+            45deg,
+            white,
+            grey,
+            white,
+            grey
+    );
+    opacity: 0.85;
+}
+
 #container {
-    margin: 0;
-    margin-left: 10px;
-    margin-top: 10px;
+    margin: 10px 0 0 10px;
     padding: 0;
     background: #000;
 }
