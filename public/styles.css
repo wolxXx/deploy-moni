@@ -1,5 +1,5 @@
 body, html {
-    background: #000;
+    background: #111;
     color: #fff;
     margin: 0;
     padding: 0;
@@ -17,9 +17,9 @@ body, html {
 }
 
 #container {
-    margin: 10px 0 0 10px;
+    margin: 20px;
     padding: 0;
-    background: #000;
+    background: #111;
 }
 
 h1 {
@@ -37,4 +37,18 @@ table td {
 table th, table td {
     text-align: left;
     vertical-align: top;
+}
+
+#clock {
+    position: fixed;
+    top: -6px;
+    right: 0;
+    padding-right: 10px;
+    background: #222;
+    padding-left: 10px;
+    padding-top: 10px;
+    border-bottom: solid 1px #666;
+    border-left: solid 1px #666;
+    border-radius: 0;
+    border-bottom-left-radius: 10px;
 }

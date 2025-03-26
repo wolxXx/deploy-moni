@@ -8,8 +8,6 @@ declare(strict_types=1);
 
 ?>
 
-
-
 <? foreach ($data->groups as $group): ?>
 
     <div style="display: flex; flex-direction: column; width: 15%; border: 1px solid white; padding: 0.2%; word-wrap: anywhere;">
@@ -37,8 +35,37 @@ declare(strict_types=1);
                         <?= $dateFormatter->format(datetime: new \DateTime(datetime: $deployment->createdAt)) ?>
                     </span>
                     <?= $deployment->name ?>
+
+                    <style type="text/css">
+
+                    </style>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const dialog = document.querySelector("dialog");
+                            const showButton = document.querySelector("dialog + button");
+                            const closeButton = document.querySelector("dialog button");
+                            showButton.addEventListener("click", () => {
+                                dialog.showModal();
+                            });
+                            closeButton.addEventListener("click", () => {
+                                dialog.close();
+                            });
+                        });
+                    </script>
+
+                    <dialog>
+                        <button autofocus>Close</button>
+                        <p>This modal dialog has a groovy backdrop!</p>
+                    </dialog>
+                    <button>Show the dialog</button>
                 </div>
             <? endforeach ?>
         </div>
     </div>
 <? endforeach ?>
+
+<script>
+    window.setTimeout(function() {
+        location.reload();
+    }, 20000);
+</script>
