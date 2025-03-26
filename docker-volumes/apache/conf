@@ -1,0 +1,17 @@
+<VirtualHost *:80>
+        ServerAdmin devops@wolxxx.de
+        ServerName www.deploy-moni.local
+        DocumentRoot /var/www/public
+        <Directory /var/www>
+                SetEnv APPLICATION_ENV "main"
+                DirectoryIndex index.php
+                Options FollowSymLinks
+                AllowOverride all
+                Order allow,deny
+                allow from all
+                Require all granted
+        </Directory>
+        ErrorLog ${APACHE_LOG_DIR}/current.log
+        LogLevel debug
+        CustomLog ${APACHE_LOG_DIR}/current.log combined
+</VirtualHost>
