@@ -32,7 +32,7 @@ class IndexAction extends AbstractAction
             $groups[] = $group;
             $data     = $this
                 ->pdo
-                ->query(query: 'select * from deployments where group_name = "' . $groupName['group_name'] . '" order by created_at DESC, id desc limit 3')
+                ->query(query: 'select * from deployments where group_name = "' . $groupName['group_name'] . '" order by created_at DESC, id desc')
                 ->fetchAll()
             ;
             foreach ($data as $deployment) {
@@ -40,15 +40,12 @@ class IndexAction extends AbstractAction
             }
         }
 
-        return $this
-            ->renderer
-            ->render(
-                response: $this->response,
-                template: 'action' . \DIRECTORY_SEPARATOR . 'index.php',
-                data    : [
-                              'data' => new \Application\DataObject\View\IndexAction(groups: $groups, dateFormatter: \IntlDateFormatter::create(locale: 'de_DE', dateType: \IntlDateFormatter::RELATIVE_MEDIUM, timeType: \IntlDateFormatter::SHORT)),
-                          ]
-            )
-        ;
+        $view = new \Application\DataObject\View\IndexAction();
+        $view->groups        = $groups;
+
+        return $this->render(
+            template: 'action' . \DIRECTORY_SEPARATOR . 'index.php',
+            view    : $view
+        );
     }
 }

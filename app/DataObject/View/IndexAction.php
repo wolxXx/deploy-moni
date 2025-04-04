@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Application\DataObject\View;
 
-class IndexAction
+class IndexAction extends \Application\DataObject\View
 {
-    public function __construct(
-        public array              $groups,
-        public \IntlDateFormatter $dateFormatter,
-    ) {
-    }
+    /**
+     * @var \Application\DataObject\Group[]
+     */
+    public array $groups;
+
 }

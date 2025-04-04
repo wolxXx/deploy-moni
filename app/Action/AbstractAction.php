@@ -12,12 +12,24 @@ abstract class AbstractAction
     {
         $this->renderer = new \Slim\Views\PhpRenderer(
             templatePath: \ROOT_DIR . DIRECTORY_SEPARATOR . 'app' . \DIRECTORY_SEPARATOR . 'views',
-            attributes  : [
-                              'dateFormatter' => \IntlDateFormatter::create(locale: 'de_DE', dateType: \IntlDateFormatter::RELATIVE_MEDIUM, timeType: \IntlDateFormatter::SHORT),
-                          ],
             layout      : 'layout' . \DIRECTORY_SEPARATOR . 'main.php'
         );
     }
 
     public abstract function run(): \Psr\Http\Message\ResponseInterface;
+
+    protected function render(string $template, \Application\DataObject\View $view): \Psr\Http\Message\ResponseInterface
+    {
+        $view->dateFormatter = \IntlDateFormatter::create(locale: 'de_DE', dateType: \IntlDateFormatter::RELATIVE_MEDIUM, timeType: \IntlDateFormatter::SHORT);
+        return $this
+            ->renderer
+            ->render(
+                response: $this->response,
+                template: $template,
+                data    : [
+                              'view' => $view
+                          ]
+            )
+        ;
+    }
 }
