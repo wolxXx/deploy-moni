@@ -16,11 +16,11 @@ body, html {
     opacity: 0.85;
 }
 
-#container {
-    margin: 20px;
-    padding: 0;
-    background: #111;
+dialog {
+    width: 90%;
+    height: 90%;
 }
+
 
 h1 {
     text-align: center;
@@ -51,4 +51,32 @@ table th, table td {
     border-left: solid 1px #666;
     border-radius: 0;
     border-bottom-left-radius: 10px;
+}
+
+
+#container {
+    margin: 20px;
+    padding: 0;
+    background: #111;
+}
+
+.group {
+    display: flex; flex-direction: column; width: 15%; border: 1px solid white; padding: 0.2%; word-wrap: anywhere;
+}
+
+.showDeployments{
+    margin-left: 10px;
+}
+
+.deploymentContainer .deployment {
+    color: #ccc;
+    font-size: 0.79em;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+dialog .deployment {
+    color: #000 !important;
+    font-weight: bold;
+    width: 200px;
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
  */
 
 ?>
-<dialog style="min-width: 400px;">
+<dialog>
     <button autofocus>Close</button>
     <p>This modal dialog has a groovy backdrop!</p>
 </dialog>
@@ -71,11 +71,11 @@ declare(strict_types=1);
     <?
         $count = 0;
     ?>
-    <div style="display: flex; flex-direction: column; width: 15%; border: 1px solid white; padding: 0.2%; word-wrap: anywhere;" class="group">
-        <div style="text-align: left; font-weight: bold; font-size: 1.3em; padding-bottom: 2px;">
-            <?= $group->name ?>: <?= count($group->get()) ?>
-            <button class="showDeployments" style="margin-left: 10px;">
-                show
+    <div style="" class="group">
+        <div style="">
+            <?= $group->name ?>
+            <button class="showDeployments">
+                show <?= count($group->get()) ?>
             </button>
         </div>
 
@@ -90,8 +90,8 @@ declare(strict_types=1);
             </div>
 
             <? foreach ($group->get() as $deployment): ?>
-                <div>
-                    <span style="color: #ccc; font-size: 0.79em; margin-right: 5px; display: inline-block;">
+                <div class="deploymentContainer">
+                    <span class="deployment">
                         <?= $view->dateFormatter->format(datetime: new \DateTime(datetime: $deployment->createdAt)) ?>
                     </span>
                     <?= $deployment->name ?>
@@ -104,7 +104,7 @@ declare(strict_types=1);
             <? foreach ($group->get() as $deployment): ?>
 
                 <?
-                if(++$count > 3 ) {
+                if(++$count > 2 ) {
                     break;
                 }
                 $style = ' style="';
@@ -120,10 +120,12 @@ declare(strict_types=1);
                 $style .= ' word-wrap: anywhere;"';
                 ?>
                 <div <?= $style ?>>
-                    <span style="color: #ccc; font-size: 0.79em; margin-right: 5px; display: inline-block;">
+                    <span class="deployment">
                         <?= $view->dateFormatter->format(datetime: new \DateTime(datetime: $deployment->createdAt)) ?>
                     </span>
-                    <?= $deployment->name ?>
+                    <span style="max-width: 150px; overflow:hidden; display: inline-block; text-wrap: nowrap;">
+                        <?= $deployment->name ?>
+                    </span>
 
 
                 </div>
