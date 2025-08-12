@@ -1,5 +1,7 @@
 CREATE SCHEMA IF NOT EXISTS deploy_monitor;
 
+USE deploy_monitor;
+
 CREATE TABLE IF NOT EXISTS deployments
 (
     id         INT AUTO_INCREMENT,
