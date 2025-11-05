@@ -25,7 +25,7 @@ declare(strict_types=1);
         const dialog = document.querySelector("dialog");
 
         document.addEventListener('click', function (event) {
-            if(true === modalOpen) {
+            if (true === modalOpen) {
                 event.stopPropagation();
                 event.preventDefault();
                 dialog.close()
@@ -42,8 +42,7 @@ declare(strict_types=1);
                 event.preventDefault();
                 let closest = element.closest('.group');
                 let querySelector = closest.querySelector('.modalContent');
-                let innerHTML = querySelector.innerHTML;
-                dialog.innerHTML = innerHTML;
+                dialog.innerHTML = querySelector.innerHTML;
                 document.querySelector('::backdrop')?.addEventListener('click', function () {
                     dialog.close()
                     initReload()
@@ -66,9 +65,9 @@ declare(strict_types=1);
     });
 </script>
 
-<? foreach ($view->groups as $group): ?>
+<?php foreach ($view->groups as $group): ?>
 
-    <?
+    <?php
         $count = 0;
     ?>
     <div style="" class="group">
@@ -89,35 +88,33 @@ declare(strict_types=1);
                 </button>
             </div>
 
-            <? foreach ($group->get() as $deployment): ?>
+            <?php foreach ($group->get() as $deployment): ?>
                 <div class="deploymentContainer">
                     <span class="deployment">
                         <?= $view->dateFormatter->format(datetime: new \DateTime(datetime: $deployment->createdAt)) ?>
                     </span>
                     <?= $deployment->name ?>
                 </div>
-            <? endforeach ?>
+            <?php endforeach ?>
         </div>
 
         <div>
-
-            <? foreach ($group->get() as $deployment): ?>
-
-                <?
-                if(++$count > 2 ) {
-                    break;
-                }
-                $style = ' style="';
-                if ($deployment->id !== count(value: $group->get()) - 1) {
-                    $style .= ' border-bottom: 1px solid #cccccc60;';
-                }
-                if (0 === $deployment->id) {
-                    $style .= ' font-size: 1.1em; font-weight: bold; color: #fff;';
-                }
-                if (0 !== $deployment->id) {
-                    $style .= ' color: #ccc;';
-                }
-                $style .= ' word-wrap: anywhere;"';
+            <?php foreach ($group->get() as $deployment): ?>
+                <?php
+                    if (++$count > 2 ) {
+                        break;
+                    }
+                    $style = ' style="';
+                    if ($deployment->id !== count(value: $group->get()) - 1) {
+                        $style .= ' border-bottom: 1px solid #cccccc60;';
+                    }
+                    if (0 === $deployment->id) {
+                        $style .= ' font-size: 1.1em; font-weight: bold; color: #fff;';
+                    }
+                    if (0 !== $deployment->id) {
+                        $style .= ' color: #ccc;';
+                    }
+                    $style .= ' word-wrap: anywhere;"';
                 ?>
                 <div <?= $style ?>>
                     <span class="deployment">
@@ -129,8 +126,8 @@ declare(strict_types=1);
 
 
                 </div>
-            <? endforeach ?>
+            <?php endforeach ?>
         </div>
     </div>
-<? endforeach ?>
+<?php endforeach ?>
 

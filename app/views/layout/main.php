@@ -1,4 +1,11 @@
+<?php
 
+declare(strict_types=1);
+
+/**
+ * @var string $content
+ */
+?>
 <!DOCTYPE html>
 <html lang="en" translate="no">
     <head>
