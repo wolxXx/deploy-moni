@@ -21,3 +21,5 @@ CREATE TABLE IF NOT EXISTS  deployment_key
     PRIMARY KEY (id),
     unique key (value)
 );
+
+ALTER TABLE deployments ADD KEY (group_name);
