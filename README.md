@@ -8,6 +8,10 @@ apply database.sql to database host
 
 get http://127.0.0.1:7000 for overview
 
+get http://127.0.0.1:7000/recent for recent deployments
+
+get http://127.0.0.1:7000/api/v1/items for json formatted deployment list
+
 apply exampleData.sql if you want
 run /random if you want
 
