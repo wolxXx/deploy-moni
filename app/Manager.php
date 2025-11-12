@@ -4,11 +4,21 @@ namespace Application;
 
 class Manager
 {
+    public static function getLogger(): \Monolog\Logger
+    {
+        $logger = new \Monolog\Logger(name: 'deploy_monitor');
+        $logger->pushHandler(handler: new \Monolog\Handler\StreamHandler(stream: 'php://stdout', level: \Monolog\Level::Debug));
+        $logger->pushHandler(handler: new \Monolog\Handler\StreamHandler(stream: 'php://stderr', level: \Monolog\Level::Error));
+        $logger->pushHandler(handler: new \Monolog\Handler\StreamHandler(stream: __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'log', level: \Monolog\Level::Debug));
+
+        return $logger;
+    }
+
     public static function Factory(): void
     {
         $app = \Slim\Factory\AppFactory::create();
         $app->addRoutingMiddleware();
-        $app->addErrorMiddleware(displayErrorDetails: true, logErrors: true, logErrorDetails: true);
+        $app->addErrorMiddleware(displayErrorDetails: true, logErrors: true, logErrorDetails: true, logger: self::getLogger());
 
         $host    = 'db';
         $db      = 'deploy_monitor';
@@ -30,15 +40,48 @@ class Manager
         }
 
         $app->get(pattern: '/random', callable: function (\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($pdo) {
-            return new \Application\Action\RandomAction(response: $response, request: $request, pdo: $pdo)->run();
+            try {
+                return new \Application\Action\RandomAction(response: $response, request: $request, pdo: $pdo)->run();
+            } catch (\Throwable $e) {
+                \Application\Manager::getLogger()->error($e);
+                return $response->withStatus(code: 500);
+            }
         });
 
         $app->get(pattern: '/', callable: function (\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($pdo) {
-            return new \Application\Action\IndexAction(response: $response, request: $request, pdo: $pdo)->run();
+            try {
+                return new \Application\Action\IndexAction(response: $response, request: $request, pdo: $pdo)->run();
+            } catch (\Throwable $e) {
+                \Application\Manager::getLogger()->error($e);
+                return $response->withStatus(code: 500);
+            }
+        });
+
+        $app->get(pattern: '/recent', callable: function (\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($pdo) {
+            try {
+                return new \Application\Action\RecentAction(response: $response, request: $request, pdo: $pdo)->run();
+            } catch (\Throwable $e) {
+                \Application\Manager::getLogger()->error($e);
+                return $response->withStatus(code: 500);
+            }
         });
 
         $app->get(pattern: '/api/v1/log', callable: function (\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($pdo) {
-            return new \Application\Action\LogAction(response: $response, request: $request, pdo: $pdo)->run();
+            try {
+                return new \Application\Action\LogAction(response: $response, request: $request, pdo: $pdo)->run();
+            } catch (\Throwable $e) {
+                \Application\Manager::getLogger()->error($e);
+                return $response->withStatus(code: 500);
+            }
+        });
+
+        $app->get(pattern: '/api/v1/items', callable: function (\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($pdo) {
+            try {
+                return new \Application\Action\ListAction(response: $response, request: $request, pdo: $pdo)->run();
+            } catch (\Throwable $e) {
+                \Application\Manager::getLogger()->error($e);
+                return $response->withStatus(code: 500);
+            }
         });
 
         $app->run();
