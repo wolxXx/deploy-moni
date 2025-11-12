@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 /**
- * @var \Application\DataObject\View\IndexAction $view
+ * @var \Application\DataObject\View\RecentAction $view
  */
 
 ?>
