@@ -8,8 +8,11 @@ class LogAction extends AbstractAction
 {
     public function run(): \Psr\Http\Message\ResponseInterface
     {
+        \Application\Manager::getLogger()->info('log action');
+        \Application\Manager::getLogger()->info($_SERVER['REQUEST_URI']);
         $header = $this->request->getHeader(name: 'x-api-key');
         if (0 === count(value: $header)) {
+            \Application\Manager::getLogger()->info('no auth header');
             throw new \InvalidArgumentException(message: "auth header missing", code: 400);
         }
         $apiKey  = $header[0];
@@ -20,6 +23,7 @@ class LogAction extends AbstractAction
         $prepare->execute(params: [$apiKey]);
         $data = $prepare->fetchAll();
         if (0 == count(value: $data)) {
+            \Application\Manager::getLogger()->info('invalid api key');
             throw new \InvalidArgumentException(message: "Invalid API key", code: 401);
         }
 
