@@ -6,14 +6,23 @@ declare(strict_types=1);
 
 ?>
 
+<style type="text/css">
+    html, body {
+        overflow: hidden;
+    }
+</style>
 
 <script>
     let timeoutHandler = null;
     function initReload() {
-        timeoutHandler = window.setTimeout(function() {
+        timeoutHandler = window.setTimeout(() => {
             location.reload();
         }, 20000);
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        initReload()
+    });
 </script>
 
 <table>
