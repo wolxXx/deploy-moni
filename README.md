@@ -1,8 +1,20 @@
 # deploy-moni
 
-check docker-compose.yml file for exposed ports
+## about
+this tool allows you to track deployments. 
+just curl the log endpoint and watch the dashboard reloads itself. 
+or have a look at the latest deployment-list.
 
-docker compose up --build -d 
+
+
+## developer notes
+copy .env.dist to .env -> adjust ports and names
+
+launch ./run.sh to bring up the containers
+
+make sure you have deployment keys in the database and provide the key within a log request
+
+backup: docker compose exec web php backup.php
 
 apply database.sql to database host
 
@@ -11,6 +23,9 @@ get http://127.0.0.1:7000 for overview
 get http://127.0.0.1:7000/recent for recent deployments
 
 get http://127.0.0.1:7000/api/v1/items for json formatted deployment list
+
+replace the port with the actual value from the .env file ;) 
+
 
 apply exampleData.sql if you want
 run /random if you want
