@@ -23,13 +23,14 @@
     }
   },
   "require": {
-    "php": "8.4.*",
+    "php": "8.5.*",
     "ext-curl": "*",
     "ext-intl": "*",
     "ext-json": "*",
     "ext-mysqli": "*",
     "ext-pdo": "*",
     "ext-simplexml": "*",
+    "nesbot/carbon": "*",
     "laminas/laminas-json": "*",
     "monolog/monolog": "*",
     "rector/rector": "*",
