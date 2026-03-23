@@ -8,7 +8,7 @@ abstract class AbstractAction
 {
     protected \Slim\Views\PhpRenderer $renderer;
 
-    public final function __construct(protected \Psr\Http\Message\ResponseInterface $response, protected \Psr\Http\Message\RequestInterface $request, protected \PDO $pdo)
+    public final function __construct(protected \Psr\Http\Message\ResponseInterface $response, protected \Psr\Http\Message\RequestInterface $request, protected \PDO $pdo, protected array $arguments = [])
     {
         $this->renderer = new \Slim\Views\PhpRenderer(
             templatePath: \ROOT_DIR . DIRECTORY_SEPARATOR . 'app' . \DIRECTORY_SEPARATOR . 'views',

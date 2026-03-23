@@ -84,6 +84,24 @@ class Manager
             }
         });
 
+        $app->delete(pattern: '/api/v1/items/{id}', callable: function (\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response, array $arguments = []) use ($pdo) {
+            try {
+                return new \Application\Action\DeleteItemAction(response: $response, request: $request, pdo: $pdo, arguments: $arguments)->run();
+            } catch (\Throwable $e) {
+                \Application\Manager::getLogger()->error($e);
+                return $response->withStatus(code: 500);
+            }
+        });
+
+        $app->delete(pattern: '/api/v1/groups/{id}', callable: function (\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response, array $arguments = []) use ($pdo) {
+            try {
+                return new \Application\Action\DeleteGroupAction(response: $response, request: $request, pdo: $pdo, arguments: $arguments)->run();
+            } catch (\Throwable $e) {
+                \Application\Manager::getLogger()->error($e);
+                return $response->withStatus(code: 500);
+            }
+        });
+
         $app->run();
     }
 }
