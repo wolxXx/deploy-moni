@@ -24,7 +24,10 @@ declare(strict_types=1);
         initReload()
         const dialog = document.querySelector("dialog");
 
+
+
         document.addEventListener('click', function (event) {
+            return true;
             if (true === modalOpen) {
                 event.stopPropagation();
                 event.preventDefault();
@@ -54,9 +57,46 @@ declare(strict_types=1);
                     initReload()
                     modalOpen = false
                 })
+
+                dialog.querySelectorAll('.deleteItemButton').forEach(function (element) {
+                    console.log(element);
+                    element.addEventListener('click', function (event) {
+                        const deploymentId = element.getAttribute('data-deployment');
+                        console.log('clicked on delete button');
+                        event.stopPropagation();
+                        event.preventDefault();
+                        let closest = element.closest('.deploymentContainer');
+                        closest.remove()
+
+                        fetch('/api/v1/items/__ID__'.replace('__ID__', deploymentId), {
+                            method: 'DELETE',
+                        })
+
+                        return false;
+                    })
+                })
+
+                dialog.querySelectorAll('.deleteGroupButton').forEach(function (element) {
+                    console.log(element);
+                    element.addEventListener('click', function (event) {
+                        const groupId = element.getAttribute('data-group');
+                        console.log('clicked on delete button');
+                        event.stopPropagation();
+                        event.preventDefault();
+                        dialog.close()
+                        modalOpen = false
+                        document.querySelector('.group[data-group="'+groupId+'"]').remove()
+                        fetch('/api/v1/groups/__ID__'.replace('__ID__', groupId), {
+                            method: 'DELETE',
+                        })
+                        return false;
+                    })
+                })
+
                 dialog.showModal();
                 window.clearTimeout(timeoutHandler);
                 modalOpen = true
+
 
                 return false;
             })
@@ -70,7 +110,7 @@ declare(strict_types=1);
     <?php
         $count = 0;
     ?>
-    <div style="" class="group">
+    <div style="" class="group" data-group="<?= base64_encode($group->name) ?>">
         <div style="">
             <?= $group->name ?>
             <button class="showDeployments">
@@ -87,9 +127,19 @@ declare(strict_types=1);
                     close
                 </button>
             </div>
+            <div style="width: 100%; text-align: center">
+                <button class="deleteGroupButton" data-group="<?= base64_encode($group->name) ?>">
+                    delete group
+                </button>
+            </div>
 
             <?php foreach ($group->get() as $deployment): ?>
                 <div class="deploymentContainer">
+                    <span class="deleteItemButton" data-deployment="<?= $deployment->id ?>">
+                        <button class="danger">
+                            X
+                        </button>
+                    </span>
                     <span class="deployment">
                         <?= $view->dateFormatter->format(datetime: new \DateTime(datetime: $deployment->createdAt)) ?>
                     </span>
