@@ -80,3 +80,19 @@ dialog .deployment {
     font-weight: bold;
     width: 200px;
 }
+
+button {
+    background-color: #eee;
+    color: #222;
+    border: solid 1px #555;
+    padding: 5px;
+    margin-right: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button.danger {
+    background-color: #f00;
+    color: #222;
+    border: solid 1px #a22;
+}
