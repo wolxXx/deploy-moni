@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Application\DataObject;
 
@@ -10,8 +10,7 @@ class Group
 
     public function __construct(
         public string $name,
-    ) {
-    }
+    ) {}
 
     public function add(Deployment $deployment): static
     {

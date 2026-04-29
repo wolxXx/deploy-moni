@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Application\Action;
 
@@ -23,7 +23,7 @@ class IndexAction extends AbstractAction
                     ORDER BY 
                         deployment.group_name ASC
                     ;
-                    SQL
+                    SQL,
             )
             ->fetchAll()
         ;
@@ -40,12 +40,12 @@ class IndexAction extends AbstractAction
             }
         }
 
-        $view = new \Application\DataObject\View\IndexAction();
-        $view->groups        = $groups;
+        $view         = new \Application\DataObject\View\IndexAction();
+        $view->groups = $groups;
 
         return $this->render(
             template: 'action' . \DIRECTORY_SEPARATOR . 'index.php',
-            view    : $view
+            view    : $view,
         );
     }
 }

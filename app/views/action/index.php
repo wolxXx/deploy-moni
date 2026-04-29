@@ -24,8 +24,6 @@ declare(strict_types=1);
         initReload()
         const dialog = document.querySelector("dialog");
 
-
-
         document.addEventListener('click', function (event) {
             return true;
             if (true === modalOpen) {
@@ -83,6 +81,9 @@ declare(strict_types=1);
                         console.log('clicked on delete button');
                         event.stopPropagation();
                         event.preventDefault();
+                        if (false === confirm('Are you sure you want to delete this group?')) {
+                            return false;
+                        }
                         dialog.close()
                         modalOpen = false
                         document.querySelector('.group[data-group="'+groupId+'"]').remove()
@@ -128,7 +129,7 @@ declare(strict_types=1);
                 </button>
             </div>
             <div style="width: 100%; text-align: center">
-                <button class="deleteGroupButton" data-group="<?= base64_encode($group->name) ?>">
+                <button class="deleteGroupButton danger" data-group="<?= base64_encode($group->name) ?>">
                     delete group
                 </button>
             </div>

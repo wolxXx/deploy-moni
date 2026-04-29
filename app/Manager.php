@@ -4,16 +4,6 @@ namespace Application;
 
 class Manager
 {
-    public static function getLogger(): \Monolog\Logger
-    {
-        $logger = new \Monolog\Logger(name: 'deploy_monitor');
-        $logger->pushHandler(handler: new \Monolog\Handler\StreamHandler(stream: 'php://stdout', level: \Monolog\Level::Debug));
-        $logger->pushHandler(handler: new \Monolog\Handler\StreamHandler(stream: 'php://stderr', level: \Monolog\Level::Error));
-        $logger->pushHandler(handler: new \Monolog\Handler\StreamHandler(stream: __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'log', level: \Monolog\Level::Debug));
-
-        return $logger;
-    }
-
     public static function Factory(): void
     {
         $app = \Slim\Factory\AppFactory::create();
@@ -39,69 +29,118 @@ class Manager
             throw new \PDOException(message: $e->getMessage(), code: (int)$e->getCode());
         }
 
-        $app->get(pattern: '/random', callable: function (\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($pdo) {
+        $app->get(pattern: '/random', callable: function(\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($pdo) {
             try {
                 return new \Application\Action\RandomAction(response: $response, request: $request, pdo: $pdo)->run();
             } catch (\Throwable $e) {
-                \Application\Manager::getLogger()->error($e);
+                \Application\Manager::getLogger()
+                                    ->error($e)
+                ;
+
                 return $response->withStatus(code: 500);
             }
         });
 
-        $app->get(pattern: '/', callable: function (\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($pdo) {
+        $app->get(pattern: '/', callable: function(\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($pdo) {
             try {
                 return new \Application\Action\IndexAction(response: $response, request: $request, pdo: $pdo)->run();
             } catch (\Throwable $e) {
-                \Application\Manager::getLogger()->error($e);
+                \Application\Manager::getLogger()
+                                    ->error($e)
+                ;
+
                 return $response->withStatus(code: 500);
             }
         });
 
-        $app->get(pattern: '/recent', callable: function (\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($pdo) {
+        $app->get(pattern: '/recent', callable: function(\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($pdo) {
+            Manager::getLogger()
+                ->info(message: 'recent', context: ['file' => __FILE__ . '::' . __LINE__])
+            ;
             try {
                 return new \Application\Action\RecentAction(response: $response, request: $request, pdo: $pdo)->run();
             } catch (\Throwable $e) {
-                \Application\Manager::getLogger()->error($e);
+                \Application\Manager::getLogger()
+                                    ->error($e)
+                ;
+
                 return $response->withStatus(code: 500);
             }
         });
 
-        $app->get(pattern: '/api/v1/log', callable: function (\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($pdo) {
+        $app->get(pattern: '/api/v1/log', callable: function(\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($pdo) {
             try {
                 return new \Application\Action\LogAction(response: $response, request: $request, pdo: $pdo)->run();
             } catch (\Throwable $e) {
-                \Application\Manager::getLogger()->error($e);
+                \Application\Manager::getLogger()
+                                    ->error($e)
+                ;
+
                 return $response->withStatus(code: 500);
             }
         });
 
-        $app->get(pattern: '/api/v1/items', callable: function (\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($pdo) {
+        $app->get(pattern: '/api/v1/items', callable: function(\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response) use ($pdo) {
             try {
                 return new \Application\Action\ListAction(response: $response, request: $request, pdo: $pdo)->run();
             } catch (\Throwable $e) {
-                \Application\Manager::getLogger()->error($e);
+                \Application\Manager::getLogger()
+                                    ->error($e)
+                ;
+
                 return $response->withStatus(code: 500);
             }
         });
 
-        $app->delete(pattern: '/api/v1/items/{id}', callable: function (\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response, array $arguments = []) use ($pdo) {
+        $app->delete(pattern: '/api/v1/items/{id}', callable: function(\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response, array $arguments = []) use ($pdo) {
             try {
                 return new \Application\Action\DeleteItemAction(response: $response, request: $request, pdo: $pdo, arguments: $arguments)->run();
             } catch (\Throwable $e) {
-                \Application\Manager::getLogger()->error($e);
+                \Application\Manager::getLogger()
+                                    ->error($e)
+                ;
+
                 return $response->withStatus(code: 500);
             }
         });
 
-        $app->delete(pattern: '/api/v1/groups/{id}', callable: function (\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response, array $arguments = []) use ($pdo) {
+        $app->delete(pattern: '/api/v1/groups/{id}', callable: function(\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response, array $arguments = []) use ($pdo) {
             try {
                 return new \Application\Action\DeleteGroupAction(response: $response, request: $request, pdo: $pdo, arguments: $arguments)->run();
             } catch (\Throwable $e) {
-                \Application\Manager::getLogger()->error($e);
+                \Application\Manager::getLogger()
+                                    ->error($e)
+                ;
+
                 return $response->withStatus(code: 500);
             }
         });
 
         $app->run();
+    }
+
+    public static function getLogger(): \Monolog\Logger
+    {
+        $formatter = new \Monolog\Formatter\LineFormatter(
+            format                    : null,
+            dateFormat                : null,
+            allowInlineLineBreaks     : true,
+            ignoreEmptyContextAndExtra: true,
+        );
+
+        return new \Monolog\Logger(name: 'deploy_monitor')
+            ->pushHandler(handler: new \Monolog\Handler\StreamHandler(stream: 'php://stdout', level: \Monolog\Level::Debug))
+            ->pushHandler(handler: new \Monolog\Handler\StreamHandler(stream: 'php://stderr', level: \Monolog\Level::Error))
+            ->pushHandler(
+                handler: new \Monolog\Handler\RotatingFileHandler(
+                             filename      : __DIR__ . \DIRECTORY_SEPARATOR . '..' . \DIRECTORY_SEPARATOR . 'logs' . \DIRECTORY_SEPARATOR . 'log',
+                             maxFiles      : 10,
+                             level         : \Monolog\Level::Debug,
+                             filePermission: 0777,
+                         )
+                             ->setFormatter(formatter: $formatter),
+
+            )
+        ;
     }
 }

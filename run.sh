@@ -70,7 +70,12 @@ sudo chmod 777 log
 if [ ! -d "backups" ]; then
     mkdir backups
 fi
+
+if [ ! -d "logs" ]; then
+    mkdir logs
+fi
 sudo chmod -cR 777 backups
+sudo chmod -cR 777 logs
 
 echo "web running under http://localhost:$WEB_PORT"
 echo "db running under $DB_PORT"

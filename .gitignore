@@ -1,6 +1,6 @@
 /.idea
 /vendor
 /backups
+/logs
 
-/log
 /.env

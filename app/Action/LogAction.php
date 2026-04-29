@@ -62,8 +62,8 @@ class LogAction extends AbstractAction
 
         $prepared = $this->pdo->prepare(query: 'insert into deployments(name, group_name, created_at) values (:name, :group, :created)');
         $params   = [
-            ':name'    => \base64_decode(string: $name),
-            ':group'   => \base64_decode(string: $group),
+            ':name'    => \trim(\base64_decode(string: $name)),
+            ':group'   => \trim(\base64_decode(string: $group)),
             ':created' => $created,
         ];
 

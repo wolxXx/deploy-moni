@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Application\Action;
 
@@ -8,7 +8,7 @@ class RandomAction extends AbstractAction
 {
     public function run(): \Psr\Http\Message\ResponseInterface
     {
-        $this->pdo->query(query: 'delete from deployments');
+        $this->pdo->query(query: 'DELETE FROM deployments');
         foreach (range(start: 0, end: 10) as $groupCounter) {
             $begin = new \DateTime(datetime: '2024-01-01 01:00:00');
             foreach (\range(start: 0, end: rand(min: 1, max: 100)) as $deploymentCounter) {
